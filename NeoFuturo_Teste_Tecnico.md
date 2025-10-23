@@ -41,7 +41,7 @@ Avaliar:
 ## 📦 Estrutura esperada do repositório
 
 ```
-/
+|
 ├── backend/
 │   ├── src/
 │   ├── test/
