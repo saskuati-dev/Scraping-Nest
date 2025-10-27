@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule} from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { ItemsModule } from './items/items.module';
 ConfigModule.forRoot()
 
 @Module({
@@ -19,7 +20,8 @@ ConfigModule.forRoot()
       logging: true,
 
     }),
-    AuthModule
+    AuthModule, 
+    ConfigModule.forRoot({isGlobal: true}), ItemsModule
   ],
   controllers: [AppController],
   providers: [AppService],
