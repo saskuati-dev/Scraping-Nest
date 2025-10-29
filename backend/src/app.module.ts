@@ -5,6 +5,8 @@ import { TypeOrmModule} from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ItemsModule } from './items/items.module';
+import { ScrapingService } from './scraping/scraping.service';
+import { ScrapingModule } from './scraping/scraping.module';
 ConfigModule.forRoot()
 
 @Module({
@@ -21,9 +23,9 @@ ConfigModule.forRoot()
 
     }),
     AuthModule, 
-    ConfigModule.forRoot({isGlobal: true}), ItemsModule
+    ConfigModule.forRoot({isGlobal: true}), ItemsModule, ScrapingModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ScrapingService],
 })
 export class AppModule {}
