@@ -16,3 +16,7 @@ Content-Type: application/json
     "email": "ze@prikito.com",
     "password": "aicalica"
 }
+
+### items user
+POST http://localhost:3001/api/v1/items
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlrDqSBQcmlraXRvIiwiZW1haWwiOiJ6ZUBwcmlraXRvLmNvbSIsInN1YiI6NCwicm9sZXMiOiJ1c2VyIiwiaWF0IjoxNzYxNzA4MzI1LCJleHAiOjE3NjE3OTQ3MjV9.L9V71CgAkZmxumP87tJq6OgCoegKusFYnT6VpbAPtqM

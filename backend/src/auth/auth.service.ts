@@ -36,8 +36,7 @@ export class AuthService {
         const user = this.userRepository.create({
             name,
             email,
-            password: saltAndHash,
-            is_adm
+            password: saltAndHash
         })
 
         await this.userRepository.save(user);
@@ -63,7 +62,7 @@ export class AuthService {
         }
 
         console.log("Signed in", user);
-        const payload = {username:user.name, email: user.email, sub: user.id}
+        const payload = {username:user.name, email: user.email, sub: user.id, roles: user.role}
         return {accessToken: this.jwtService.sign(payload)};
     }
 

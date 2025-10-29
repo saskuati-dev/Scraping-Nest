@@ -16,8 +16,12 @@ export class User{
     @Column()
     password: string;
 
-    @Column()
-    is_adm: boolean;
+    @Column({
+    type: 'enum',
+    enum: ['user', 'admin'],
+    default: 'user'
+    })
+    role: 'user' | 'admin';
 
      @CreateDateColumn()
     createdAt: Date;
