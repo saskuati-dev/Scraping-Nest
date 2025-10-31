@@ -6,7 +6,4 @@ import { AuthModule } from 'src/auth/auth.module';
   imports: [AuthModule],
   controllers: [ItemsController]
 })
-export class ItemsModule {
-
-  
-}
+export class ItemsModule {}

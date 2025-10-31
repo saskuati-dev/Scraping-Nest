@@ -9,44 +9,43 @@ import { ROLES_KEY } from "./roles.decorator";
 export class JwtAuthGuard extends AuthGuard('jwt'){
     constructor(
         private readonly reflector: Reflector,
-        private readonly jwtService: JwtService,
+        private readonly jwtService: JwtService
     ){
         super();
     }
-
-    async canActivate(context: ExecutionContext, ){
+    
+    async canActivate(context: ExecutionContext){
         const canActivate = await super.canActivate(context);
         if(!canActivate){
             return false;
         }
 
-        const requiredRoles = this.reflector.getAllAndOverride<string[]>(
-             ROLES_KEY,
-             [context.getHandler(),
-                context.getClass()
-             ]
+        const requiredRoles= this.reflector.getAllAndOverride<string[]>(
+            ROLES_KEY, 
+            [context.getHandler(), context.getClass()]
         );
+
         if(!requiredRoles){
             return true;
         }
+         
 
-        const request = context.switchToHttp().getRequest(); //Auth: bearer token
+        const request= context.switchToHttp().getRequest();
         const token = request.headers.authorization?.split(' ')[1];
 
         if(!token){
-            throw new UnauthorizedException("No token provided");
+            throw new UnauthorizedException('SEM AUTORIZACAO');
         }
 
-        const payload= this.jwtService.verify(token)
-        const userRoles = payload.roles || [];
+        const payload = this.jwtService.verify(token);
 
-        const hasRole =  userRoles.some(role => requiredRoles.includes(role))
+        const userRoles = payload.role || [];
+        const hasRole = () => userRoles.some(role => requiredRoles.includes(role));
 
         if(!hasRole){
-            throw new UnauthorizedException("No permissions")
+            throw new UnauthorizedException("Acesso nao autorizado")
         }
-
         return true;
-
     }
+    
 }

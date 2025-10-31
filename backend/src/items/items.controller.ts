@@ -1,5 +1,4 @@
-import { Controller, Get, UseGuards, Request, Post, Body, ForbiddenException} from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+    import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { CurrentUserDto } from 'src/auth/current-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -8,12 +7,15 @@ import { Roles } from 'src/auth/roles.decorator';
 @Controller('items')
 export class ItemsController {
 
-
+    @Get('')
+    getPublicFeature() {
+        return 'This is a public feature';
+    }
 
     @Post()
-    @UseGuards(JwtAuthGuard)
     @Roles('admin')
-    postItemAdm(){
-        return "Admin";
+    @UseGuards(JwtAuthGuard)
+    getPrivateFeature(@CurrentUser() user: CurrentUserDto) {
+        return `This is a private feature for user ${user.username}`;
     }
 }

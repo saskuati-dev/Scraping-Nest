@@ -4,9 +4,9 @@ import { AppService } from './app.service';
 import { TypeOrmModule} from '@nestjs/typeorm'
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { ItemsModule } from './items/items.module';
 import { ScrapingService } from './scraping/scraping.service';
 import { ScrapingModule } from './scraping/scraping.module';
+import { ItemsModule } from './items/items.module';
 ConfigModule.forRoot()
 
 @Module({
@@ -22,8 +22,8 @@ ConfigModule.forRoot()
       logging: true,
 
     }),
-    AuthModule, 
-    ConfigModule.forRoot({isGlobal: true}), ItemsModule, ScrapingModule,
+    AuthModule, ItemsModule,
+    ConfigModule.forRoot({isGlobal: true}), ScrapingModule, ItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService, ScrapingService],

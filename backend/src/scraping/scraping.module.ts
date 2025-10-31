@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { ScrapingController } from './scraping.controller';
 
-@Module({})
+@Module({
+  controllers: [ScrapingController]
+})
 export class ScrapingModule {}

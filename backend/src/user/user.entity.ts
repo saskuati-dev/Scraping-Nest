@@ -16,12 +16,9 @@ export class User{
     @Column()
     password: string;
 
-    @Column({
-    type: 'enum',
-    enum: ['user', 'admin'],
-    default: 'user'
-    })
-    role: 'user' | 'admin';
+    @Column("simple-array", { default: 'user' })
+    role: ('user' | 'admin')[];
+
 
      @CreateDateColumn()
     createdAt: Date;

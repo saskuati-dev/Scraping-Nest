@@ -16,7 +16,7 @@ export class AuthService {
         private readonly jwtService: JwtService,            
     ) {}
 
-    async signUp(name: string, email: string, password: string, is_adm: boolean = false){
+    async signUp(name: string, email: string, password: string, role:('user' | 'admin')[] = ['user']){
         if (!this.isValidEmail(email)) {
             throw new BadRequestException('Email inválido');
         }
@@ -36,7 +36,8 @@ export class AuthService {
         const user = this.userRepository.create({
             name,
             email,
-            password: saltAndHash
+            password: saltAndHash,
+            role
         })
 
         await this.userRepository.save(user);
@@ -62,7 +63,7 @@ export class AuthService {
         }
 
         console.log("Signed in", user);
-        const payload = {username:user.name, email: user.email, sub: user.id, roles: user.role}
+        const payload = {username:user.name, email: user.email, sub: user.id, role: user.role}
         return {accessToken: this.jwtService.sign(payload)};
     }
 

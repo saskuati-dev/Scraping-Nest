@@ -8,13 +8,13 @@ export class AuthController {
     }
     @Post('signup')
     signUp(@Body() body: any){
-        const { name, email, password, is_adm } = body;
+        const { name, email, password, role} = body;
         
         if (!name || !email || !password) {
             throw new BadRequestException('Name, email and password are required');
         }
         
-        return this.authService.signUp(name, email, password, is_adm || false);
+        return this.authService.signUp(name, email, password, role);
     }
 
     @Post('signin')
