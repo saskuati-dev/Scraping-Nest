@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ScrapingService } from './scraping/scraping.service';
 import { ScrapingModule } from './scraping/scraping.module';
 import { ItemsModule } from './items/items.module';
+import { PositionModule } from './position/position.module';
 ConfigModule.forRoot()
 
 @Module({
@@ -23,7 +24,7 @@ ConfigModule.forRoot()
 
     }),
     AuthModule, ItemsModule,
-    ConfigModule.forRoot({isGlobal: true}), ScrapingModule, ItemsModule,
+    ConfigModule.forRoot({isGlobal: true}), ScrapingModule, ItemsModule, PositionModule,
   ],
   controllers: [AppController],
   providers: [AppService, ScrapingService],
