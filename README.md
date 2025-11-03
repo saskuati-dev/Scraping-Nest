@@ -20,6 +20,7 @@ Desenvolvido com tecnologias como TypeScript, Nest.js e Next.js conforme pasta f
 ---
 ## 🛠️ Tecnologias utilizadas
 
+<div align="center">
 
 | Critério | Pontos |
 |-----------|--------|
@@ -29,6 +30,7 @@ Desenvolvido com tecnologias como TypeScript, Nest.js e Next.js conforme pasta f
 | Scraping| Playwright |
 | Automação | n8n |
 | Banco de dados | PostgreSQL |
+</div>
 
 ---
 # 🚀 Instalação & Uso
@@ -189,6 +191,7 @@ curl -X POST http://localhost:3001/api/v1/auth/login \
 ```
 
 ### 📦 2. Itens (dados coletados)
+<div align="center">
 
 |Método|	Endpoint |	Acesso|	Descrição|
 |--------|--------|--------|--------|
@@ -197,6 +200,8 @@ curl -X POST http://localhost:3001/api/v1/auth/login \
 |POST	|/api/v1/items	|Admin	|Cria manualmente um item.|
 |PUT	|/api/v1/items/:id |	Admin |	Atualiza um item existente.|
 |DELETE	|/api/v1/items/:id |Admin	| Remove um item da base. |
+
+</div>
 
 ### 🔍 Exemplo de listagem
 
