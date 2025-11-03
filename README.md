@@ -150,8 +150,8 @@ A API segue o padrão RESTful, com autenticação via JWT e controle de acesso b
 
 |Método	|Endpoint	|Acesso	Descrição|
 |-----------|--------|--------|
-|POST	|/api/v1/auth/register|	Público	Registra um novo usuário. Recebe name, email e password.|
-POST|	/api/v1/auth/login|	Público	Autentica um usuário e retorna um token JWT.
+|POST	|``` /api/v1/auth/register```|	Público	Registra um novo usuário. Recebe name, email e password.|
+POST| ``` /api/v1/auth/login ``` |	Público	Autentica um usuário e retorna um token JWT.
 
 ---
 
@@ -195,11 +195,11 @@ curl -X POST http://localhost:3001/api/v1/auth/login \
 
 |Método|	Endpoint |	Acesso|	Descrição|
 |--------|--------|--------|--------|
-|GET	|/api/v1/items	|Autenticado	| Retorna lista paginada de itens coletados.|
-|GET	|/api/v1/items/:id |	Autenticado |	Retorna detalhes de um item específico.|
-|POST	|/api/v1/items	|Admin	|Cria manualmente um item.|
-|PUT	|/api/v1/items/:id |	Admin |	Atualiza um item existente.|
-|DELETE	|/api/v1/items/:id |Admin	| Remove um item da base. |
+|GET	|``` /api/v1/items ```	|Autenticado	| Retorna lista paginada de itens coletados.|
+|GET	|``` /api/v1/items/:id  ``` |	Autenticado |	Retorna detalhes de um item específico.|
+|POST	| ``` /api/v1/items	``` |Admin	|Cria manualmente um item.|
+|PUT	| ``` /api/v1/items/:id ``` |	Admin |	Atualiza um item existente.|
+|DELETE	| ``` /api/v1/items/:id ``` |Admin	| Remove um item da base. |
 
 </div>
 
@@ -233,7 +233,7 @@ curl -X GET "http://localhost:3001/api/v1/items?page=1&pageSize=10&source=remote
 
 |Método |	Endpoint |	Acesso |	Descrição|
 |--------|--------|--------|--------|
-|POST |	/api/v1/scrape |	Admin	| Aciona o processo de scraping manualmente.|
+|POST |	``` /api/v1/scrape ```|	Admin	| Aciona o processo de scraping manualmente.|
 
 ### ⚙️ Exemplo
 ```curl
