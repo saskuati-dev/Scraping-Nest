@@ -15,6 +15,10 @@ import {
 import { Input } from "@/components/ui/input"
 import Header from "@/components/header"
 
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
+
+
 type Item = {
   id: number
   position: string
@@ -55,7 +59,7 @@ function ScrapeDialog({ siteName, siteUrl }: { siteName: string; siteUrl: string
 
     try {
       const token = getToken()
-      const res = await fetch("http://localhost:3001/api/v1/scrape", {
+      const res = await fetch(`${API_BASE_URL}/scrape`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -140,7 +144,7 @@ export default function Admin() {
       })
       if (searchQuery) params.append("query", searchQuery)
 
-      const res = await fetch(`http://localhost:3001/api/v1/items?${params.toString()}`, {
+      const res = await fetch(`${API_BASE_URL}/items?${params.toString()}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: token ? `Bearer ${token}` : "",
@@ -174,7 +178,7 @@ export default function Admin() {
     if (!confirm("Deseja realmente deletar esta vaga?")) return
     try {
       const token = getToken()
-      const res = await fetch(`http://localhost:3001/api/v1/items/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/items/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
@@ -200,7 +204,7 @@ export default function Admin() {
     if (!editingItem) return
     try {
       const token = getToken()
-      const res = await fetch(`http://localhost:3001/api/v1/items/${editingItem.id}`, {
+      const res = await fetch(`${API_BASE_URL}/items/${editingItem.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

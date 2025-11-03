@@ -8,6 +8,9 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
+
 export default function SignUpPage() {
   const router = useRouter()
   const [name, setName] = useState("")
@@ -22,7 +25,6 @@ export default function SignUpPage() {
     setLoading(true)
     setError(null)
 
-    // validações simples
     if (!name || !email || !password || !confirmPassword) {
       setError("Preencha todos os campos")
       setLoading(false)
@@ -40,7 +42,7 @@ export default function SignUpPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:3001/api/v1/auth/signup", {
+      const res = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

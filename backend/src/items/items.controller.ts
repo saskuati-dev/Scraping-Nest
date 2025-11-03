@@ -11,7 +11,7 @@ export class ItemsController {
     @Get()
     async findAll(
         @Query('page') page = 1,
-        @Query('pageSize') pageSize = 10,
+        @Query('pageSize') pageSize = 12,
         @Query('source') source?: string,
         @Query('query') query?: string,
     ) {

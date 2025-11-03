@@ -8,6 +8,9 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
+
 export default function SignInPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
@@ -21,7 +24,7 @@ export default function SignInPage() {
     setError(null)
 
     try {
-      const res = await fetch("http://localhost:3001/api/v1/auth/signin", {
+      const res = await fetch(`${API_BASE_URL}/auth/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

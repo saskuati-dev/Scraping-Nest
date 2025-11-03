@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import Header from "../components/header"
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
+
 type Item = {
   id: number
   position: string
@@ -58,8 +60,7 @@ export default function Home() {
         // Se não for JSON, usa direto
         token = localStorage.getItem("accessToken") || ""
       }
-
-      const res = await fetch(`http://localhost:3001/api/v1/items?${params.toString()}`, {
+      const res = await fetch(`${API_BASE_URL}/items?${params.toString()}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: token ? `Bearer ${token}` : "",
