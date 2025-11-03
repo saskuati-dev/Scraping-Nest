@@ -1,6 +1,5 @@
 "use client"
 
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -9,36 +8,36 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 
-export default function SignUpPage(){
-    const router = useRouter()
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-    const [error, setError] = useState<string | null>(null)
-    const [loading, setLoading] = useState(false)
+export default function SignUpPage() {
+  const router = useRouter()
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
-
-    const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
 
+    // validações simples
     if (!name || !email || !password || !confirmPassword) {
-            setError("Preencha todos os campos");
-            setLoading(false);
-            return;
-        }
-        if (password.length < 6) {
-            setError("A senha precisa ter pelo menos 6 caracteres");
-            setLoading(false);
-            return;
-        }
-        if (password !== confirmPassword) {
-            setError("As senhas não coincidem");
-            setLoading(false);
-            return;
-        }
+      setError("Preencha todos os campos")
+      setLoading(false)
+      return
+    }
+    if (password.length < 6) {
+      setError("A senha precisa ter pelo menos 6 caracteres")
+      setLoading(false)
+      return
+    }
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem")
+      setLoading(false)
+      return
+    }
 
     try {
       const res = await fetch("http://localhost:3001/api/v1/auth/signup", {
@@ -49,16 +48,19 @@ export default function SignUpPage(){
         body: JSON.stringify({ name, email, password }),
       })
 
+      // ❗ lê a resposta apenas uma vez
+      const data = await res.json()
+
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.message || "Erro ao fazer login")
+        throw new Error(data.message || "Erro ao fazer cadastro")
       }
 
-      const data = await res.json()
+      // salva os dados no localStorage
       localStorage.setItem("user", JSON.stringify(data.user))
-      localStorage.setItem("accessToken", JSON.stringify(data.accessToken))
-      console.log("Login successful", data)
-      router.push("/")
+      localStorage.setItem("accessToken", data.accessToken)
+
+      console.log("Cadastro realizado com sucesso:", data)
+      router.push("/signin")
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message)
@@ -68,7 +70,6 @@ export default function SignUpPage(){
     } finally {
       setLoading(false)
     }
-
   }
 
   return (
@@ -83,12 +84,13 @@ export default function SignUpPage(){
               <Label htmlFor="name">Nome</Label>
               <Input
                 id="name"
-                type="name"
+                type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
+
             <div className="flex flex-col gap-1">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -110,8 +112,9 @@ export default function SignUpPage(){
                 required
               />
             </div>
-             <div className="flex flex-col gap-1">
-              <Label htmlFor="password">Confirmar senha</Label>
+
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="confirmPassword">Confirmar senha</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -124,14 +127,14 @@ export default function SignUpPage(){
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <Button type="submit" className="mt-2" disabled={loading}>
-              {loading ? "Entrando..." : "Entrar"}
+              {loading ? "Cadastrando..." : "Cadastrar"}
             </Button>
           </form>
+
           <div className="flex justify-center mt-2">
-            <p className="text-sm text-500 "> Já está cadastrado?  </p>
-            <b></b>
-            <Link href="/signin" className="text-sm text-blue-500 hover:underline">
-                Entrar
+            <p className="text-sm text-gray-500">Já está cadastrado?</p>
+            <Link href="/signin" className="ml-1 text-sm text-blue-500 hover:underline">
+              Entrar
             </Link>
           </div>
         </CardContent>

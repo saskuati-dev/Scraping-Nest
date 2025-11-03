@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import {
@@ -31,6 +32,16 @@ type ApiResponse = {
   totalPages: number
 }
 
+/* 🔄 Função auxiliar para ler token de forma segura */
+function getToken(): string {
+  try {
+    const stored = localStorage.getItem("accessToken")
+    return stored ? JSON.parse(stored) : stored || ""
+  } catch {
+    return localStorage.getItem("accessToken") || ""
+  }
+}
+
 /* Componente reutilizável para Scraping */
 function ScrapeDialog({ siteName, siteUrl }: { siteName: string; siteUrl: string }) {
   const [error, setError] = useState<string | null>(null)
@@ -43,20 +54,18 @@ function ScrapeDialog({ siteName, siteUrl }: { siteName: string; siteUrl: string
     setSuccess(false)
 
     try {
+      const token = getToken()
       const res = await fetch("http://localhost:3001/api/v1/scrape", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken") || '""')}`,
+          Authorization: token ? `Bearer ${token}` : "",
         },
         body: JSON.stringify({ site: siteUrl }),
       })
 
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.message || "Erro ao fazer scrape.")
-      }
-
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message || "Erro ao fazer scrape.")
       setSuccess(true)
     } catch (err) {
       if (err instanceof Error) setError(err.message)
@@ -91,6 +100,10 @@ function ScrapeDialog({ siteName, siteUrl }: { siteName: string; siteUrl: string
 }
 
 export default function Admin() {
+  const router = useRouter()
+  const [user, setUser] = useState<{ role?: string; name?: string } | null>(null)
+  const [loadingUser, setLoadingUser] = useState(true)
+
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -98,14 +111,29 @@ export default function Admin() {
   const [totalPages, setTotalPages] = useState(1)
   const [editingItem, setEditingItem] = useState<Item | null>(null)
   const [form, setForm] = useState({ position: "", company: "", location: "" })
-
-  // 🔍 Campos de busca
   const [query, setQuery] = useState("")
   const [searchValue, setSearchValue] = useState("")
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user")
+    if (stored) {
+      const parsedUser = JSON.parse(stored)
+      setUser(parsedUser)
+
+      if (parsedUser.role[0] !== "admin") {
+        router.push("/") 
+      }
+    } else {
+      router.push("/signin") 
+    }
+    setLoadingUser(false)
+  }, [router])
+
 
   const fetchItems = async (pageNum: number = 1, searchQuery: string = "") => {
     try {
       setLoading(true)
+      const token = getToken()
       const params = new URLSearchParams({
         page: pageNum.toString(),
         pageSize: "10",
@@ -114,11 +142,14 @@ export default function Admin() {
 
       const res = await fetch(`http://localhost:3001/api/v1/items?${params.toString()}`, {
         headers: {
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken") || '""')}`,
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
         },
       })
-      if (!res.ok) throw new Error("Erro ao carregar itens")
-      const data: ApiResponse = await res.json()
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message || "Erro ao carregar itens")
+
       setItems(data.data)
       setPage(data.page)
       setTotalPages(data.totalPages)
@@ -142,10 +173,11 @@ export default function Admin() {
   const handleDelete = async (id: number) => {
     if (!confirm("Deseja realmente deletar esta vaga?")) return
     try {
+      const token = getToken()
       const res = await fetch(`http://localhost:3001/api/v1/items/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken") || '""')}`,
+          Authorization: token ? `Bearer ${token}` : "",
         },
       })
       if (!res.ok) throw new Error("Erro ao deletar item")
@@ -167,11 +199,12 @@ export default function Admin() {
   const handleEditSave = async () => {
     if (!editingItem) return
     try {
+      const token = getToken()
       const res = await fetch(`http://localhost:3001/api/v1/items/${editingItem.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken") || '""')}`,
+          Authorization: token ? `Bearer ${token}` : "",
         },
         body: JSON.stringify(form),
       })

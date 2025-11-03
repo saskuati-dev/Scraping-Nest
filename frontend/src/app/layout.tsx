@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers"; // nosso ThemeProvider que vamos criar
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-gray-900 dark:text-white transition-colors`}
       >
-        {children}
+        {/* Providers inclui o ThemeProvider para dark mode */}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

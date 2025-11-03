@@ -48,24 +48,37 @@ export default function Home() {
       })
       if (searchQuery) params.append("query", searchQuery)
 
+      // ✅ Leitura segura do token
+      let token = ""
+      try {
+        const stored = localStorage.getItem("accessToken")
+        // Tenta fazer parse se estiver em JSON (ex: foi salvo com JSON.stringify)
+        token = stored ? JSON.parse(stored) : ""
+      } catch {
+        // Se não for JSON, usa direto
+        token = localStorage.getItem("accessToken") || ""
+      }
+
       const res = await fetch(`http://localhost:3001/api/v1/items?${params.toString()}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken") || '""')}`,
+          Authorization: token ? `Bearer ${token}` : "",
         },
       })
 
+      // ⚠️ Lê a resposta apenas uma vez
+      const data: ApiResponse | { message?: string } = await res.json()
+
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.message || "Erro ao carregar itens.")
+        throw new Error((data as any).message || "Erro ao carregar itens.")
       }
 
-      const data: ApiResponse = await res.json()
       console.log("Resposta da API:", data)
 
-      setItems(data.data)
-      setPage(data.page)
-      setTotalPages(data.totalPages)
+      const typedData = data as ApiResponse
+      setItems(typedData.data)
+      setPage(typedData.page)
+      setTotalPages(typedData.totalPages)
     } catch (err) {
       if (err instanceof Error) setError(err.message)
       else setError("Erro desconhecido.")
@@ -81,7 +94,7 @@ export default function Home() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    setPage(1) // sempre volta pra primeira página
+    setPage(1)
     setQuery(searchValue.trim())
   }
 
@@ -176,7 +189,6 @@ export default function Home() {
             </div>
           </>
         )}
-
       </main>
     </div>
   )

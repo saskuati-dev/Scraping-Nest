@@ -8,11 +8,11 @@ import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
-  NavigationMenuTrigger,
   NavigationMenuLink,
-} from "@/components/ui/navigation-menu"  // conforme shadcn docs :contentReference[oaicite:3]{index=3}
+} from "@/components/ui/navigation-menu"
 
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "../components/themetoggle" // Import do toggle
 
 interface User {
   name: string
@@ -26,7 +26,6 @@ export default function Header() {
 
   useEffect(() => {
     const stored = localStorage.getItem("user")
-    console.log(stored)
     if (stored) {
       setUser(JSON.parse(stored))
     }
@@ -39,12 +38,10 @@ export default function Header() {
   }
 
   return (
-    <header className="w-full bg-white shadow-md ">
-    
-     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-
-
-        {/* Navegação menu */}
+    <header className="w-full bg-white dark:bg-gray-900 shadow-md dark:text-white transition-colors">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        
+        {/* Navegação */}
         <nav className="flex-1">
           <NavigationMenu>
             <NavigationMenuList className="flex items-center space-x-4">
@@ -54,29 +51,21 @@ export default function Header() {
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              {user ? (
-                <>
-                  <NavigationMenuItem>
-                  </NavigationMenuItem>
-
-                  {user.role[0] === "admin" && (
-                    <NavigationMenuItem>
-                      <NavigationMenuLink asChild>
-                        <Link href="/admin">Painel Admin</Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  )}
-                </>
-              ) : (
-                <>
-                </>
+              {user && user.role[0] === "admin" && (
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link href="/admin">Painel Admin</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
               )}
             </NavigationMenuList>
           </NavigationMenu>
         </nav>
 
-        {/* Conta / login-logout */}
+        {/* Conta / login-logout + toggle */}
         <div className="flex items-center space-x-4">
+          <ThemeToggle /> {/* Botão de alternância de tema */}
+
           {user ? (
             <>
               <span className="text-sm">Olá, <b>{user.name}</b></span>
@@ -86,12 +75,8 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link href="/signin">
-                Entrar
-              </Link>
-              <Link href="/signup">
-               Criar Conta
-              </Link>
+              <Link href="/signin">Entrar</Link>
+              <Link href="/signup">Criar Conta</Link>
             </>
           )}
         </div>
