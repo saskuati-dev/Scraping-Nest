@@ -19,15 +19,15 @@ Content-Type: application/json
 
 ### items user
 POST   http://localhost:3001/api/v1/items
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlrDqSBQcmlraXRvIiwiZW1haWwiOiJ6ZUBwcmlraXRvLmNvbSIsInN1YiI6NCwicm9sZSI6WyJhZG1pbiJdLCJpYXQiOjE3NjE5Njc3NDcsImV4cCI6MTc2MjU3MjU0N30.sxNBn5U4bYSp3YJAUchdW2vuwnaTtV91mF09mPVzf1c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlrDqSBQcmlraXRvIiwiZW1haWwiOiJ6ZUBwcmlraXRvLmNvbSIsInN1YiI6NCwicm9sZSI6WyJhZG1pbiJdLCJpYXQiOjE3NjIxMzA4MDMsImV4cCI6MTc2MjczNTYwM30.w3-_-GFQ7MR-Aijt0Nf2p3zIfhX-tGH4i45tjuzk2mA
 
 ### items user
 GET   http://localhost:3001/api/v1/items
 
 ### scrap
-POST   http://localhost:3001/api/v1/scrap
+POST   http://localhost:3001/api/v1/scrape
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlrDqSBQcmlraXRvIiwiZW1haWwiOiJ6ZUBwcmlraXRvLmNvbSIsInN1YiI6NCwicm9sZSI6WyJhZG1pbiJdLCJpYXQiOjE3NjE5Njc3NDcsImV4cCI6MTc2MjU3MjU0N30.sxNBn5U4bYSp3YJAUchdW2vuwnaTtV91mF09mPVzf1c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlrDqSBQcmlraXRvIiwiZW1haWwiOiJ6ZUBwcmlraXRvLmNvbSIsInN1YiI6NCwicm9sZSI6WyJhZG1pbiJdLCJpYXQiOjE3NjIxMzA4MDMsImV4cCI6MTc2MjczNTYwM30.w3-_-GFQ7MR-Aijt0Nf2p3zIfhX-tGH4i45tjuzk2mA
 
 {
     "site":"weworkremotely"
@@ -64,3 +64,6 @@ Content-Type: application/json
     "position": "Desenvolvedor Backend Senior",
     "salary": "R$9500"
 }
+
+###
+GET http://localhost:3001/api/v1/items

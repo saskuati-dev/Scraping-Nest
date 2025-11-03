@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
 
 export default function SignUpPage(){
     const router = useRouter()
@@ -54,14 +55,20 @@ export default function SignUpPage(){
       }
 
       const data = await res.json()
+      localStorage.setItem("user", JSON.stringify(data.user))
+      localStorage.setItem("accessToken", JSON.stringify(data.accessToken))
       console.log("Login successful", data)
-
-      router.push("/items")
-    } catch (err: any) {
-      setError(err.message)
+      router.push("/")
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError(String(err))
+      }
     } finally {
       setLoading(false)
     }
+
   }
 
   return (
@@ -120,6 +127,13 @@ export default function SignUpPage(){
               {loading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
+          <div className="flex justify-center mt-2">
+            <p className="text-sm text-500 "> Já está cadastrado?  </p>
+            <b></b>
+            <Link href="/signin" className="text-sm text-blue-500 hover:underline">
+                Entrar
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </main>

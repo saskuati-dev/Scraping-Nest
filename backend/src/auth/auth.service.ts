@@ -62,9 +62,9 @@ export class AuthService {
             throw new UnauthorizedException("User or password are invalids, try again");
         }
 
-        console.log("Signed in", user);
         const payload = {username:user.name, email: user.email, sub: user.id, role: user.role}
-        return {accessToken: this.jwtService.sign(payload)};
+
+        return {user: user,accessToken: this.jwtService.sign(payload)};
     }
 
     private isValidEmail(email: string): boolean {

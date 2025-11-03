@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
 
 export default function SignInPage() {
   const router = useRouter()
@@ -34,15 +35,21 @@ export default function SignInPage() {
       }
 
       const data = await res.json()
-      console.log("Login successful", data)
 
-      // redireciona para a home
+      localStorage.setItem("user", JSON.stringify(data.user))
+      localStorage.setItem("accessToken", data.accessToken)
+      
+      
+
       router.push("/")
-    } catch (err: any) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
+    } catch (err: unknown) {
+  if (err instanceof Error) {
+    setError(err.message)
+  } else {
+    setError(String(err))
+  }
+}
+
   }
 
   return (
@@ -81,6 +88,12 @@ export default function SignInPage() {
               {loading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
+           <div className="flex justify-end mt-2">
+            <Link href="/signup" className="text-sm text-blue-500 hover:underline">
+              Criar Conta
+            </Link>
+          </div>
+          
         </CardContent>
       </Card>
     </main>

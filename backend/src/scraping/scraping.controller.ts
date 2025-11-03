@@ -4,7 +4,7 @@ import { Roles } from 'src/auth/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
-@Controller('scrap')
+@Controller('scrape')
 export class ScrapingController {
         constructor(private readonly scrapingService: ScrapingService) {}
 

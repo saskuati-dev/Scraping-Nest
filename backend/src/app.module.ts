@@ -13,16 +13,17 @@ ConfigModule.forRoot()
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',host: 'localhost',             
-      port: 5432,                  
-      username: process.env.DB_USERNAME,        
-      password: process.env.DB_PASSWORD,     
-      database: process.env.DB_DATABASE,     
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,  
-      logging: true,
-
-    }),
+  type: 'postgres',
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  synchronize: true,
+  logging: true,
+})
+,
     AuthModule, ItemsModule,
     ConfigModule.forRoot({isGlobal: true}), ScrapingModule, ItemsModule, PositionModule,
   ],
