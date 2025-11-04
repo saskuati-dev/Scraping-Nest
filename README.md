@@ -80,7 +80,7 @@ Crie um arquivo .env.local para conectar o frontend ao backend:
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
 ```
-Definido como localhost na porta 3001 por padrao, sendo /api/v1 parte do endpoint.
+Definido como localhost na porta 3001 por padrão, sendo /api/v1 parte do endpoint.
 
 ### Execute o backend em modo de desenvolvimento:
 
@@ -103,7 +103,30 @@ npm run start
 Acesse o frontend via browser, normalmente em http://localhost:3000
 
 Use a aplicação para iniciar scraping ou visualizar dados.
+
+
+
+
+## 🚀 Docker
+
+Na raiz do projeto:
+```bash
+cd infra
+docker compose up --build
+```
+
+Isso vai levantar tudo:
+
+<div align="center">
+
+| Serviço      | URL                     |
+|---------------|------------------------|
+| Frontend (Next.js) | http://localhost:3000 |
+| Backend (Nest.js)  | http://localhost:3001 |
+| Banco de Dados (PostgreSQL) | localhost:5432 |
+| n8n Automations | http://localhost:5678 |
 ---
+</div>
 
 ## 📁 Estrutura do Projeto
 
@@ -147,10 +170,10 @@ A API segue o padrão RESTful, com autenticação via JWT e controle de acesso b
 
 ### 🔐 1. Autenticação & Usuários
 
-|Método	|Endpoint	|Acesso	Descrição|
-|-----------|--------|--------|
-|POST	|``` /api/v1/auth/register```|	Público	Registra um novo usuário. Recebe name, email e password.|
-POST| ``` /api/v1/auth/login ``` |	Público	Autentica um usuário e retorna um token JWT.
+|Método	|Endpoint	|Acesso	|Descrição|
+|-----------|--------|--------|--------|
+|POST	|``` /api/v1/auth/register```|	Público|	Registra um novo usuário. Recebe name, email e password.|
+POST| ``` /api/v1/auth/login ``` |	Público	|Autentica um usuário e retorna um token JWT.
 
 ---
 
@@ -297,4 +320,4 @@ Isso vai levantar tudo:
 
 -   Frontend (Next.js) em http://localhost:3000
 
-- n8n em http://localhost:5678
+-   n8n em http://localhost:5678
