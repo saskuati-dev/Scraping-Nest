@@ -54,7 +54,6 @@ cd Scraping-Nest
 ``` bash
 cd backend
 npm install
-
 ```
 ### Variáveis de ambiente
 
@@ -133,7 +132,7 @@ Use a aplicação para iniciar scraping ou visualizar dados.
 │   └── docker-compose.yml
 │
 ├── n8n/
-│   └── workflow-export.json
+│   └── Schedule Scraper.json
 │
 ├── .github/
 │   └── workflows/
@@ -157,7 +156,7 @@ POST| ``` /api/v1/auth/login ``` |	Público	Autentica um usuário e retorna um t
 
 ## 📥 Exemplo de registro
 ``` curl
-curl -X POST http://localhost:3001/api/v1/auth/register \
+curl -X POST http://localhost:3001/api/v1/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
     "name": "João Silva",
@@ -168,7 +167,7 @@ curl -X POST http://localhost:3001/api/v1/auth/register \
 
 ## 📥 Exemplo de login
 ``` curl
-curl -X POST http://localhost:3001/api/v1/auth/login \
+curl -X POST http://localhost:3001/api/v1/auth/signin \
   -H "Content-Type: application/json" \
   -d '{
     "email": "joao@example.com",
@@ -280,3 +279,22 @@ Node de notificação (Slack, Email ou Console)
 Exportar o workflow JSON e salvar em:
 
 n8n/workflow-export.json
+
+
+# 🚀 Como usar
+
+Na raiz do projeto:
+```bash
+cd infra
+docker compose up --build
+```
+
+Isso vai levantar tudo:
+
+-   PostgreSQL em localhost:5432
+
+-    Backend (Nest.js) em http://localhost:3001  
+
+-   Frontend (Next.js) em http://localhost:3000
+
+- n8n em http://localhost:5678

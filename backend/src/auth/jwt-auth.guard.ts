@@ -39,10 +39,11 @@ export class JwtAuthGuard extends AuthGuard('jwt'){
 
         const payload = this.jwtService.verify(token);
 
-        const userRoles = payload.role || [];
-        const hasRole = () => userRoles.some(role => requiredRoles.includes(role));
+        const userRoles: string[] = Array.isArray(payload.role) ? payload.role : [payload.role].filter(Boolean) as string[];         
+        const hasRoleResult = userRoles.some(role => requiredRoles.includes(role));
 
-        if(!hasRole){
+
+        if(!hasRoleResult){ 
             throw new UnauthorizedException("Acesso nao autorizado")
         }
         return true;

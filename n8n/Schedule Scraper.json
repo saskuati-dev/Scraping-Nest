@@ -1,0 +1,247 @@
+{
+  "name": "Schedule Scraper",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        208
+      ],
+      "id": "9da3fc08-3e10-434b-833d-3a5c110f63ad",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://backend:3001/api/v1/auth/signup",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "User"
+            },
+            {
+              "name": "email",
+              "value": "user@user.com"
+            },
+            {
+              "name": "password",
+              "value": "user123"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        80,
+        -112
+      ],
+      "id": "630066dd-6a4a-4452-b0b0-d4a2a9b62aca",
+      "name": "SignUp"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3001/api/v1/auth/signin",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "email",
+              "value": "joao@example.com"
+            },
+            {
+              "name": "password",
+              "value": "123456"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        80,
+        80
+      ],
+      "id": "0a615aa0-7749-4e3f-bae6-a43612f73a08",
+      "name": "SignIn"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://backend:3001/api/v1/auth/signin",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "email",
+              "value": "admin@admin.com"
+            },
+            {
+              "name": "password",
+              "value": "admin123"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        80,
+        304
+      ],
+      "id": "973cd59b-6823-42f7-8ca4-5d69572b3c83",
+      "name": "SignInADM"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://backend:3001/api/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.accessToken }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "site",
+              "value": "remoteok"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        384,
+        208
+      ],
+      "id": "87d3c857-440e-40aa-baaf-a3c52bf1045c",
+      "name": "Scrap RemoteOk"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://backend:3001/api/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.accessToken }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "site",
+              "value": "weworkremotely"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        384,
+        416
+      ],
+      "id": "4b7a3fa2-14ea-4e65-a8b6-f30972235a2d",
+      "name": "Scrap WeWorkRemotely"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        416
+      ],
+      "id": "525b67d0-8948-4226-9f25-0a4595d20b0e",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "SignInADM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SignInADM": {
+      "main": [
+        [
+          {
+            "node": "Scrap RemoteOk",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Scrap WeWorkRemotely",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "SignInADM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b97fd6a9-18cf-446a-8440-6c687e42a1d9",
+  "meta": {
+    "instanceId": "4bd2c412ba70847f497a7adb5ccd527724bfd229fc9b24f755c32b270459464b"
+  },
+  "id": "qr9i5V8kDOszUxLn",
+  "tags": []
+}

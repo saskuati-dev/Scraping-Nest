@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------------
+  # 1. SERVIÇO DE BACKEND (NESTJS)
+  # -------------------------------------------------------------------
+  backend:
+    container_name: nest_backend
+    build:
+      context: ../backend 
+      dockerfile: Dockerfile
+    
+    ports:
+      - "3001:3001"
+      
+    volumes:
+      - ../backend:/usr/src/app
+      - /usr/src/app/node_modules
+      
+    environment:
+      DATABASE_URL: postgres://user:password@postgres:5432/mydb
+      N8N_WEBHOOK_URL: http://n8n:5678/webhook-test/seu-id
+      
+    depends_on:
+      postgres:
+        condition: service_healthy
+      
+    command: sh -c "npx playwright install && npm run start:dev"
+
+
+  # -------------------------------------------------------------------
+  # 2. SERVIÇO DE FRONTEND (NEXT.JS)
+  # -------------------------------------------------------------------
+  frontend:
+    container_name: next_frontend
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      
+    ports:
+      - "3000:3000"
+      
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+      - /app/.next
+      
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:3001/api/v1
+
+
+  # -------------------------------------------------------------------
+  # 3. SERVIÇO N8N (Automação)
+  # -------------------------------------------------------------------
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: workflow_n8n
+    ports:
+      - "5678:5678"
+    
+    volumes:
+      - n8n_data:/home/node/.n8n
+      
+    environment:
+      N8N_HOST: n8n
+      N8N_PORT: 5678
+      N8N_PROTOCOL: http
+      N8N_ENCRYPTION_KEY: chave # MUDE ISTO!
+      WEBHOOK_URL: http://localhost:5678/
+
+
+  # -------------------------------------------------------------------
+  # 4. SERVIÇO DE BANCO DE DADOS (PostgreSQL)
+  # -------------------------------------------------------------------
+  postgres:
+    image: postgres:15.14-alpine
+    container_name: database_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password # MUDE ISTO!
+      POSTGRES_DB: mydb
+
+    # Healthcheck para garantir que o banco esteja pronto
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+# -------------------------------------------------------------------
+# 5. VOLUMES PERSISTENTES
+# -------------------------------------------------------------------
+volumes:
+  postgres_data:
+  n8n_data:

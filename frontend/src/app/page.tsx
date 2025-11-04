@@ -46,7 +46,7 @@ export default function Home() {
 
       const params = new URLSearchParams({
         page: pageNumber.toString(),
-        pageSize: "10",
+        pageSize: "12",
       })
       if (searchQuery) params.append("query", searchQuery)
 

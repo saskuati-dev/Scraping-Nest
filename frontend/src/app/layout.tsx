@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers"; // nosso ThemeProvider que vamos criar
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,15 +20,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="scroll-smooth">
+    // suppressHydrationWarning prevents the React warning for theme mismatch
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-gray-900 dark:text-white transition-colors`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors`}
       >
-        {/* Providers inclui o ThemeProvider para dark mode */}
+        {/* Wrap all content in Providers (ThemeProvider) */}
         <Providers>{children}</Providers>
       </body>
     </html>
