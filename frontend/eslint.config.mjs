@@ -23,7 +23,6 @@ const eslintConfig = [
 
   {
     rules: {
-      // ESTA É A CORREÇÃO: Desativa a regra que transforma 'any' em erro de build
       "@typescript-eslint/no-explicit-any": "off" 
     }
   }
