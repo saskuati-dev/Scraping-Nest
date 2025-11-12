@@ -7,10 +7,15 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   app.enableCors({
-    origin: 'http://localhost:3000', 
+    origin: ['http://localhost:3000', process.env.FRONTEND_URL || '*'],
   });
 
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3001);
+
+  // 🔥 Use a porta definida pelo Render (ou 3001 localmente)
+  const port = process.env.PORT || 3001;
+  await app.listen(port);
+
+  console.log(`🚀 Server running on port ${port}`);
 }
 bootstrap();
