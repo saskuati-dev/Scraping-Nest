@@ -172,7 +172,7 @@ function parseRelativeDate(text: string): Date {
   }
   const value = parseInt(match[1], 10);
   const unit = match[2];
-  const ms = {
+  const timeUnits = {
     s: 1000,
     m: 60 * 1000,
     h: 60 * 60 * 1000,
@@ -180,7 +180,8 @@ function parseRelativeDate(text: string): Date {
     w: 7 * 24 * 60 * 60 * 1000,
     M: 30 * 24 * 60 * 60 * 1000,
     y: 365 * 24 * 60 * 60 * 1000,
-  }[unit];
-  
+  } as const;
+
+  const ms = timeUnits[unit] ?? 0
   return new Date(now.getTime() - value * ms);
 }
