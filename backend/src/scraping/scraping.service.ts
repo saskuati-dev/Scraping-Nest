@@ -36,7 +36,7 @@ export class ScrapingService {
         waitUntil: 'domcontentloaded',
         timeout: 60000, // aumenta o timeout para ambientes lentos
       });
-      await page.waitForSelector('tr.job', { timeout: 20000 });
+      await page.waitForSelector('tr.job', { timeout: 60000 });
 
       const jobs = await page.$$eval('tr.job', rows =>
         rows.map(row => {

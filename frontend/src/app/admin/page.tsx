@@ -226,8 +226,8 @@ export default function Admin() {
 
       <main className="flex flex-col items-center flex-1 gap-6 p-8">
         <Card className="w-[350px] p-4 flex flex-col gap-4">
-          <ScrapeDialog siteName="WeWorkRemotely" siteUrl="weworkremotely.com" />
-          <ScrapeDialog siteName="RemoteOK" siteUrl="remoteok.com" />
+          <ScrapeDialog siteName="WeWorkRemotely" siteUrl="weworkremotely" />
+          <ScrapeDialog siteName="RemoteOK" siteUrl="remoteok" />
         </Card>
 
         <h2 className="text-2xl font-bold mt-8">Gerenciar Vagas</h2>
