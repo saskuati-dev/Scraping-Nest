@@ -1,5 +1,5 @@
 # backend/Dockerfile
-FROM mcr.microsoft.com/playwright:v1.40.0-jammy AS builder
+FROM mcr.microsoft.com/playwright:v1.56.1-jammy AS builder
 
 WORKDIR /usr/src/app
 
@@ -20,7 +20,7 @@ RUN npm run build
 
 
 # ---------- Fase final ----------
-FROM mcr.microsoft.com/playwright:v1.40.0-jammy
+FROM mcr.microsoft.com/playwright:v1.56.1-jammy
 
 WORKDIR /usr/src/app
 
@@ -31,7 +31,7 @@ RUN npm ci --omit=dev
 # Copia build pronto da fase anterior
 COPY --from=builder /usr/src/app/dist ./dist
 
-# Copia outros arquivos necessários (como scripts, assets, etc.)
+# Copia outros arquivos necessários
 COPY --from=builder /usr/src/app/src ./src
 
 # Define a porta
